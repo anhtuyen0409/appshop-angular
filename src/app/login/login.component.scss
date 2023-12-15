@@ -1,0 +1,77 @@
+.login-form{
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 500px;
+  border: 1px solid white;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-header{
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.password-field{
+  position: relative;
+}
+
+.form-control:focus{
+  color: black;
+  outline: none;
+}
+
+.password-toggle{
+  position: absolute;
+  top: 70%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.checkbox-text{
+  color: rgb(243, 165, 42);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.checkbox-text input[type="checkbox"]:checked{
+  border-color: white;
+  background-color: rgb(233, 66, 178);
+}
+
+.form-check-input{
+  margin-right: 5px;
+}
+
+.register-link{
+  color: rgb(81, 23, 169);
+  text-decoration: none;
+}
+
+.access-right{
+  margin-top: 20px;
+  width: 200px;
+  color: white;
+  border: 1px solid rgb(255, 64, 180);
+}
+
+.access-right:focus{
+  border: 1px solid rgb(255, 64, 180);
+}
+
+.form-control::placeholder{
+  opacity: 1;
+}
+
+.login-button{
+  background: linear-gradient(to right, rgb(255, 64, 180), rgb(126, 43, 237));
+  color: white;
+  border-radius: 30px;
+  width: 100%;
+  padding: 10px 0;
+  margin-top: 20px;
+  border: none;
+}
