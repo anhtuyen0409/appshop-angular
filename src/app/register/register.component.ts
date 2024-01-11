@@ -1,5 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { RegisterDTO } from '../dtos/register.dto';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +22,7 @@ export class RegisterComponent {
   isAccepted: boolean;
   dateOfBirth: Date;
 
-  constructor() {
+  constructor(private router: Router, private userService: UserService) {
     this.phone = '';
     this.password = '';
     this.retypePassword = '';
@@ -31,10 +34,39 @@ export class RegisterComponent {
   }
 
   onPhoneChange() {
-    console.log(`Phone typed: ${this.phone}`)
+    console.log(`Phone typed: ${this.phone}`);
   }
 
   register() {
+
+    debugger
+
+    const registerDTO: RegisterDTO = {
+      "fullname": this.fullname,
+      "phone_number": this.phone,
+      "address": this.address,
+      "password": this.password,
+      "retype_password": this.retypePassword,
+      "date_of_birth": this.dateOfBirth,
+      "facebook_account_id": 0,
+      "google_account_id": 0,
+      "role_id": 1
+    }
+
+    this.userService.register(registerDTO).subscribe({
+      next: (response: any) => {
+          debugger
+          // đăng ký thành công, chuyển sang màn hình login
+          this.router.navigate(['/login']);
+      },
+      complete: () => {
+        debugger
+      },
+      error: (error: any) => {
+        // xử lý lỗi nếu có
+        alert(`Đăng ký không thành công. Lỗi: ${error.error}`);
+      }
+    });
 
   }
 
