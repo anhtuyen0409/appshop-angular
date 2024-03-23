@@ -6,13 +6,12 @@
     <p>Welcome to my shop app</p>
   </div>
   <div class="search-box">
-    <input type="text" class="form-control search-input" placeholder="Tìm sản phẩm...">
-    <select class="form-control product-category">
-      <option selected disabled>Danh mục sản phẩm</option>
-      <option>Nước ngọt</option>
-      <option>Bia</option>
-      <option>Đồ ăn vặt</option>
+    <input type="text" class="form-control search-input" placeholder="Tìm sản phẩm..." [(ngModel)]="keyword">
+    <select class="form-control product-category" [(ngModel)]="selectedCategoryId">
+      <option [value]="0">All Categories</option>
+      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
     </select>
+    <button class="btn btn-primary ml-2" (click)="searchProducts()">Search</button>
   </div>
   <div class="row">
     <div class="col-lg-4 col-md-6" *ngFor="let product of products">

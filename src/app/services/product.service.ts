@@ -9,8 +9,10 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(page: number, limit: number): Observable<Product[]> {
+  getProducts(keyword: string, selectedCategoryId: number, page: number, limit: number): Observable<Product[]> {
     const params = new HttpParams()
+      .set('keyword', keyword.toString())
+      .set('selectedCategoryId', selectedCategoryId.toString())
       .set('page', page.toString())
       .set('limit', limit.toString());
 

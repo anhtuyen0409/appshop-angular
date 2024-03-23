@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { enviroment } from 'src/app/environments/environment';
+import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
+import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -10,20 +12,52 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class HomeComponent implements OnInit {
   products: Product[] = [];
+  categories: Category[] = []; // dữ liệu động từ CategoryService
   currentPage: number = 1;
   itemsPerPage: number = 10;
   pages: number[] = [];
   totalPages: number = 0;
   visiblePages: number[] = [];
+  keyword: string = '';
+  selectedCategoryId: number = 0;
 
-  constructor( private productService: ProductService ) { }
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService ) {
+
+    }
 
   ngOnInit() {
-    this.getProducts(this.currentPage, this.itemsPerPage);
+    this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
+    this.getCategories(1, 100);
   }
 
-  getProducts(page: number, limit: number) {
-    this.productService.getProducts(page, limit).subscribe({
+  getCategories(page: number, limit: number) {
+    this.categoryService.getCategories(page, limit).subscribe({
+      next: (categories: Category[]) => {
+        debugger
+        this.categories = categories;
+      },
+      complete: () => {
+        debugger;
+      },
+      error: (error: any) => {
+        debugger;
+        console.error('Error fetching categories: ', error);
+      }
+    });
+  }
+
+  searchProducts() {
+    this.currentPage = 1;
+    this.itemsPerPage = 10;
+    debugger
+    this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
+  }
+
+  getProducts(keyword: string, selectedCategoryId: number, page: number, limit: number) {
+    debugger
+    this.productService.getProducts(keyword, selectedCategoryId, page, limit).subscribe({
       next: (response: any) => {
         debugger
         response.products.forEach((product:Product) => {
@@ -46,7 +80,7 @@ export class HomeComponent implements OnInit {
   onPageChange(page: number) {
     debugger;
     this.currentPage = page;
-    this.getProducts(this.currentPage, this.itemsPerPage);
+    this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
   }
 
   generateVisiblePageArray(currentPage: number, totalPages: number): number[] {
