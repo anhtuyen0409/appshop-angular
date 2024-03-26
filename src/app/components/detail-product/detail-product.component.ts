@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { enviroment } from 'src/app/environments/environment';
 import { Product } from 'src/app/models/product';
 import { ProductImage } from 'src/app/models/product.image';
+import { CartService } from 'src/app/services/cart.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -16,10 +17,12 @@ export class DetailProductComponent implements OnInit {
   product?: Product;
   productId: number = 0;
   currentImageIndex: number = 0;
+  quantity: number = 1;
 
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
+    private cartService: CartService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) { }
@@ -87,6 +90,30 @@ export class DetailProductComponent implements OnInit {
   previousImage(): void {
     debugger
     this.showImage(this.currentImageIndex - 1);
+  }
+
+  addToCart(): void {
+    debugger
+    if(this.product) {
+      this.cartService.addToCart(this.product.id, this.quantity);
+    } else {
+      // xử lý khi product là null
+      console.error('Cannot add product to cart because product is null');
+    }
+  }
+
+  increaseQuantity(): void {
+    this.quantity++;
+  }
+
+  decreaseQuantity(): void {
+    if(this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
+  buyNow(): void {
+
   }
 
 }
