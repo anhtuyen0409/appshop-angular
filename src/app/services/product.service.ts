@@ -23,4 +23,11 @@ export class ProductService {
     return this.http.get(`${enviroment.apiBaseUrl}/products/${productId}`);
   }
 
+  getProductsByIds(productIds: number[]): Observable<Product[]> {
+    // chuyển danh sách id thành 1 chuỗi và truyền vào param
+    debugger
+    const params = new HttpParams().set('ids', productIds.join(','));
+    return this.http.get<Product[]>(`${this.apiGetProducts}/by-ids`, { params });
+  }
+
 }

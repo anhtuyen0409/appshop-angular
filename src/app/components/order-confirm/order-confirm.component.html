@@ -15,21 +15,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <div class="product-info">
-              <img src="https://images.pexels.com/photos/812264/pexels-photo-812264.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="product image order" class="product-image-order" >
-              <span class="product-name">Sản phẩm 1</span>
-            </div>
-          </td>
-          <td>2</td>
-          <td>$1000</td>
-          <td>$2000</td>
-        </tr>
+        <ng-container *ngFor="let item of cartItems">
+          <tr>
+            <td>
+              <div class="product-info">
+                <img [src]="item.product.thumbnail" alt="Product Image" class="product-image" >
+                <span class="product-name">{{ item.product.name }}</span>
+              </div>
+            </td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.product.price | currency:'VND':'symbol':'1.0-0' }}</td>
+            <td>{{ (item.product.price * item.quantity) | currency:'VND':'symbol':'1.0-0' }}</td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
     <div class="text-center mt-3">
-      <button class="btn btn-gradient" type="button">Tiếp tục mua hàng</button>
+      <button class="btn btn-gradient" type="button">Thanh toán</button>
     </div>
   </div>
 </div>
