@@ -3,21 +3,13 @@
 export class RegisterDTO {
 
   fullname: string;
-
   phone_number: string;
-
   address: string;
-
   password: string;
-
   retype_password: string;
-
   date_of_birth: Date;
-
   facebook_account_id: number = 0;
-
   google_account_id: number = 0;
-
   role_id: number = 1;
 
   constructor(data: any) {

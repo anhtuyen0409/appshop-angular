@@ -21,7 +21,7 @@ export class OrderConfirmComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // lấy danh sách sản phẩm từ giỏi hàng
+    // lấy danh sách sản phẩm từ giỏ hàng
     debugger
     const cart = this.cartService.getCart();
     const productIds = Array.from(cart.keys()); // chuyển danh sách id từ Map giỏ hàng

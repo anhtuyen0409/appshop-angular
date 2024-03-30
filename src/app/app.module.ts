@@ -38,9 +38,9 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     },
   ],
   bootstrap: [
-    HomeComponent //chay trang home dau tien
+    // HomeComponent //chay trang home dau tien
     // DetailProductComponent
-    // OrderComponent
+    OrderComponent
     // OrderConfirmComponent
     // LoginComponent
     // RegisterComponent
