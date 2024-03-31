@@ -5,11 +5,16 @@ import { Observable } from "rxjs";
 
 export class OrderService {
 
-    private apiCreateOrder = `${enviroment.apiBaseUrl}/orders`;
+  private apiCreateOrder = `${enviroment.apiBaseUrl}/orders`;
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    placeOrder(orderData: OrderDTO): Observable<any> {
-        return this.http.post(this.apiCreateOrder, orderData);
-    }
+  placeOrder(orderData: OrderDTO): Observable<any> {
+    return this.http.post(this.apiCreateOrder, orderData);
+  }
+
+  getOrderById(orderId: number) {
+    return this.http.get(`${enviroment.apiBaseUrl}/orders/${orderId}`);
+  }
+
 }

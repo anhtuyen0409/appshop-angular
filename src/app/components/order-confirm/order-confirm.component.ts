@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { enviroment } from 'src/app/environments/environment';
-import { Product } from 'src/app/models/product';
-import { CartService } from 'src/app/services/cart.service';
-import { ProductService } from 'src/app/services/product.service';
+import { OrderDetail } from 'src/app/models/order.detail';
+import { OrderResponse } from 'src/app/responses/order/order.response';
+import { OrderService } from 'src/app/services/order.service';
+
 
 @Component({
   selector: 'app-order-confirm',
@@ -11,58 +12,70 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class OrderConfirmComponent implements OnInit {
 
-  cartItems: { product: Product, quantity: number}[] = [];
-  couponCode: string = ''; // mã giảm giá
-  totalAmount: number = 0; // tổng tiền
+  orderResponse: OrderResponse = {
+    id: 0,
+    user_id: 0,
+    fullname: '',
+    phone_number: '',
+    email: '',
+    address: '',
+    note: '',
+    order_date: new Date(),
+    status: '',
+    total_money: 0,
+    shipping_method: '',
+    shipping_address: '',
+    shipping_date: new Date(),
+    payment_method: '',
+    order_details: []
+  };
 
-  constructor(
-    private cartService: CartService,
-    private productService: ProductService
-  ) { }
+  constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
-    // lấy danh sách sản phẩm từ giỏ hàng
+    this.getOrderDetails();
+  }
+
+  getOrderDetails(): void {
     debugger
-    const cart = this.cartService.getCart();
-    const productIds = Array.from(cart.keys()); // chuyển danh sách id từ Map giỏ hàng
-    // gọi service để lấy thông tin sản phẩm dựa trên danh sách id
-    debugger
-    this.productService.getProductsByIds(productIds).subscribe({
-      next: (products) => {
+    const orderId = 1;
+    this.orderService.getOrderById(orderId).subscribe({
+      next: (response: any) => {
+        this.orderResponse.id = response.id;
+        this.orderResponse.user_id = response.user_id;
+        this.orderResponse.fullname = response.fullname;
+        this.orderResponse.email = response.email;
+        this.orderResponse.phone_number = response.phone_number;
+        this.orderResponse.address = response.address;
+        this.orderResponse.note = response.note;
+        this.orderResponse.order_date = new Date(
+          response.order_date[0],
+          response.order_date[1] - 1,
+          response.order_date[2]
+        );
         debugger
-        // lấy thông tin sản phẩm và số lượng từ danh sách sản phẩm và giỏ hàng
-        this.cartItems = productIds.map((productId) => {
-          debugger
-          const product = products.find((p) => p.id === productId);
-          if(product) {
-            product.thumbnail = `${enviroment.apiBaseUrl}/products/images/${product.thumbnail}`;
-          }
-          return {
-            product: product!,
-            quantity: cart.get(productId)!
-          };
+        this.orderResponse.order_details = response.order_details.map((order_detail: OrderDetail) => {
+          order_detail.product.thumbnail = `${enviroment.apiBaseUrl}/products/images/${order_detail.product.thumbnail}`;
+          return order_detail;
         });
-        console.log('ok');
+        this.orderResponse.payment_method = response.payment_method;
+        this.orderResponse.shipping_date = new Date(
+          response.shipping_date[0],
+          response.shipping_date[1] - 1,
+          response.shipping_date[2]
+        );
+        this.orderResponse.shipping_method = response.shipping_method;
+        this.orderResponse.shipping_address = response.shipping_address;
+        this.orderResponse.status = response.status;
+        this.orderResponse.total_money = response.total_money;
       },
       complete: () => {
         debugger
       },
       error: (error: any) => {
         debugger
-        console.error('Error fetching detail: ', error);
       }
-    });
-  }
-
-  // tính tổng tiền
-  calculateTotal(): void {
-    this.totalAmount = this.cartItems.reduce(
-      (total, item) => total + item.product.price * item.quantity, 0
-    );
-  }
-
-  applyCoupon(): void {
-
+    })
   }
 
 }
