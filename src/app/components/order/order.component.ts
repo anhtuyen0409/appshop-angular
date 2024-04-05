@@ -6,6 +6,7 @@ import { Product } from 'src/app/models/product';
 import { CartService } from 'src/app/services/cart.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ProductService } from 'src/app/services/product.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-order',
@@ -36,7 +37,8 @@ export class OrderComponent implements OnInit {
     private cartService: CartService,
     private productService: ProductService,
     private orderService: OrderService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private tokenService: TokenService
   ) {
     // tạo FormGroup và các FormControl tương ứng
     this.orderForm = this.formBuilder.group({
@@ -52,6 +54,8 @@ export class OrderComponent implements OnInit {
 
   ngOnInit(): void {
     // lấy danh sách sản phẩm từ giỏ hàng
+    debugger
+    this.orderData.user_id = this.tokenService.getUserId();
     debugger
     const cart = this.cartService.getCart();
     const productIds = Array.from(cart.keys()); // chuyển danh sách id từ Map giỏ hàng
